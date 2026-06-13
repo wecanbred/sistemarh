@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Carreiras - CoreHR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
+
+    <!-- BARRA SUPERIOR EXTERNA -->
+    <header class="bg-white border-b border-gray-200 px-8 py-4 flex justify-between items-center shadow-sm">
+        <div class="flex items-center gap-2">
+            <i data-lucide="rocket" class="text-blue-600 w-6 h-6"></i>
+            <span class="text-xl font-bold text-gray-900 tracking-tight">CoreHR <span class="text-blue-600 font-medium text-sm">Carreiras</span></span>
+        </div>
+        <div id="header-user-actions">
+            <!-- Alterna dinamicamente entre botão de login e info do usuário -->
+        </div>
+    </header>
+
+    <!-- CONTAINER CENTRAL -->
+    <main class="flex-1 p-6 max-w-6xl w-full mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 items-start my-4">
+        
+        <!-- FLUXO 1: TELA DE LOGIN / CADASTRO (SÓ APARECE SE NÃO LOGADO) -->
+        <div id="area-autenticacao" class="lg:col-span-3 max-w-md w-full mx-auto bg-white p-8 rounded-xl border border-gray-200 shadow-md space-y-6 my-12">
+            <div class="text-center">
+                <h2 id="auth-title" class="text-xl font-bold text-gray-900">Acesse seu Portal de Vagas</h2>
+                <p id="auth-desc" class="text-xs text-gray-500 mt-1">Crie sua conta para visualizar detalhes e candidatar-se.</p>
+            </div>
+
+            <!-- Form de Login/Cadastro Único para o Protótipo -->
+            <form onsubmit="realizarAutenticacao(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Nome Completo (Para novos cadastros)</label>
+                    <input type="text" id="auth-nome" placeholder="Seu nome completo" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">CPF (Apenas números - Obrigatório)</label>
+                    <input type="text" id="auth-cpf" maxlength="11" required placeholder="00000000000" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">E-mail</label>
+                        <input type="email" id="auth-email" required placeholder="seu@email.com" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Telefone</label>
+                        <input type="text" id="auth-tel" required placeholder="(11) 99999-9999" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 mb-1">Resumo das Experiências (Seu Currículo)</label>
+                    <textarea id="auth-resumo" rows="3" placeholder="Resuma suas experiências passadas..." class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-lg text-sm transition-colors">
+                    Gravar Currículo e Acessar Vagas
+                </button>
+            </form>
+        </div>
+
+        <!-- FLUXO 2: PAINEL DE VAGAS (SÓ APARECE SE LOGADO) -->
+        <div id="portal-vagas" class="hidden lg:col-span-2 space-y-4">
+            <h2 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                <i data-lucide="briefcase" class="w-5 h-5 text-blue-600"></i> Vagas Disponíveis na Operação
+            </h2>
+            <div id="lista-vagas-cards" class="space-y-3">
+                <!-- Gerado dinamicamente -->
+            </div>
+        </div>
+
+        <!-- VISUALIZADOR DA DESCRIÇÃO DA VAGA SELECIONADA -->
+        <div id="portal-detalhe-vaga" class="hidden lg:col-span-1 bg-white p-6 rounded-xl border border-gray-200 shadow-sm sticky top-6 space-y-4">
+            <div id="detalhe-conteudo">
+                <!-- Preenchido ao clicar na vaga -->
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Simulação de Banco de Dados Local (Vagas Cadastradas)
+        const bancoVagas = [
+            { id: 101, titulo: "Analista de Logística Onsite", setor: "Operações - Shopee", local: "São Paulo - SP", modelo: "Presencial", desc: "Responsável pelo acompanhamento in loco das rotinas de triagem, expedição e monitoramento de KPIs operacionais dentro do HUB.", req: "Experiência prévia com planilhas avançadas (Excel/Sheets), facilidade de comunicação com equipes de chão de fábrica e disponibilidade de horário." },
+            { id: 102, titulo: "Supervisor de Transportes", setor: "Malha Logística", local: "Rio de Janeiro - RJ", modelo: "Presencial", desc: "Gestão direta de motoristas agregados, roteirização de frotas e monitoramento de entregas de última milha.", req: "Ensino superior completo ou cursando em Logística ou Administração, liderança de equipes operacionais e conhecimento em sistemas TMS." }
+        ];
+
+        // Estado da Sessão do Candidato
+        let sessaoCandidato = null;
+        let candidaturasRealizadas = [];
+
+        window.onload = function() {
+            lucide.createIcons();
+            renderizarAcoesHeader();
+        };
+
+        function renderizarAcoesHeader() {
+            const header = document.getElementById('header-user-actions');
+            if(sessaoCandidato) {
+                header.innerHTML = `
+                    <div class="flex items-center gap-3 text-sm">
+                        <span class="text-gray-600">Olá, <strong class="text-gray-900">${sessaoCandidato.nome}</strong></span>
+                        <button onclick="logout()" class="text-xs bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg font-medium text-gray-600">Sair</button>
+                    </div>
+                `;
+            } else {
+                header.innerHTML = `<span class="text-xs text-amber-600 bg-amber-50 px-3 py-1.5 rounded-full font-medium border border-amber-200">Área Externa Protegida</span>`;
+            }
+        }
+
+        function realizarAutenticacao(e) {
+            e.preventDefault();
+            const cpf = document.getElementById('auth-cpf').value;
+            const nome = document.getElementById('auth-nome').value || "Usuário Candidato";
+            
+            if(cpf.length !== 11 || isNaN(cpf)) {
+                alert("O CPF precisa conter exatamente 11 dígitos numéricos.");
+                return;
+            }
+
+            // Cria a sessão em memória
+            sessaoCandidato = {
+                nome: nome,
+                cpf: cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"),
+                email: document.getElementById('auth-email').value,
+                tel: document.getElementById('auth-tel').value,
+                resumo: document.getElementById('auth-resumo').value
+            };
+
+            // Transiciona as telas
+            document.getElementById('area-autenticacao').classList.add('hidden');
+            document.getElementById('portal-vagas').classList.remove('hidden');
+            document.getElementById('portal-detalhe-vaga').classList.remove('hidden');
+            
+            renderizarAcoesHeader();
+            renderizarVagas();
+            exibirInstrucaoSelecao();
+        }
+
+        function renderizarVagas() {
+            const container = document.getElementById('lista-vagas-cards');
+            container.innerHTML = '';
+
+            bancoVagas.forEach(v => {
+                const jaCandidatou = candidaturasRealizadas.includes(v.id);
+                container.innerHTML += `
+                    <div onclick="verDetalheVaga(${v.id})" class="bg-white p-5 rounded-xl border border-gray-200 hover:border-blue-500 shadow-sm transition-all cursor-pointer flex justify-between items-center group">
+                        <div>
+                            <span class="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded uppercase tracking-wider">${v.setor}</span>
+                            <h3 class="font-bold text-gray-900 text-base mt-1.5 group-hover:text-blue-600">${v.titulo}</h3>
+                            <p class="text-xs text-gray-500 mt-1 flex items-center gap-1"><i data-lucide="map-pin" class="w-3 h-3"></i> ${v.local} • ${v.modelo}</p>
+                        </div>
+                        <div>
+                            ${jaCandidatou 
+                                ? `<span class="text-xs bg-green-100 text-green-700 font-semibold px-3 py-1 rounded-full">Inscrito</span>` 
+                                : `<i data-lucide="chevron-right" class="text-gray-400 group-hover:text-blue-500"></i>`}
+                        </div>
+                    </div>
+                `;
+            });
+            lucide.createIcons();
+        }
+
+        function exibirInstrucaoSelecao() {
+            document.getElementById('detalhe-conteudo').innerHTML = `
+                <div class="text-center py-12 text-gray-400 flex flex-col items-center justify-center">
+                    <i data-lucide="arrow-left-right" class="w-8 h-8 mb-2 text-gray-300"></i>
+                    <p class="text-sm font-medium">Selecione uma vaga ao lado para ler a descrição e se candidatar.</p>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function verDetalheVaga(idVaga) {
+            const vaga = bancoVagas.find(v => v.id === idVaga);
+            const container = document.getElementById('detalhe-conteudo');
+            const jaCandidatou = candidaturasRealizadas.includes(idVaga);
+
+            container.innerHTML = `
+                <div class="space-y-4">
+                    <div>
+                        <span class="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded uppercase tracking-wider">${vaga.setor}</span>
+                        <h3 class="font-bold text-gray-900 text-lg mt-2">${vaga.titulo}</h3>
+                        <p class="text-xs text-gray-500 flex items-center gap-1 mt-1"><i data-lucide="map-pin" class="w-3 h-3"></i> ${vaga.local} (${vaga.modelo})</p>
+                    </div>
+                    <div class="border-t border-gray-100 pt-3">
+                        <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Descrição do Desafio</h4>
+                        <p class="text-sm text-gray-600 leading-relaxed">${vaga.desc}</p>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Requisitos Necessários</h4>
+                        <p class="text-sm text-gray-600 leading-relaxed">${vaga.req}</p>
+                    </div>
+                    <div class="pt-2">
+                        ${jaCandidatou 
+                            ? `<button disabled class="w-full bg-gray-200 text-gray-500 font-bold py-2.5 rounded-lg text-sm cursor-not-allowed">Você já se candidatou</button>`
+                            : `<button onclick="confirmarCandidatura(${vaga.id}, '${vaga.titulo}')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-lg text-sm transition-colors shadow">Quero me candidatar</button>`
+                        }
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function confirmarCandidatura(idVaga, tituloVaga) {
+            candidaturasRealizadas.push(idVaga);
+            alert(`Candidatura confirmada para a vaga: ${tituloVaga}!\nOs dados do seu currículo foram transmitidos de forma segura para a triagem do RH.`);
+            renderizarVagas();
+            verDetalheVaga(idVaga);
+        }
+
+        function logout() {
+            sessaoCandidato = null;
+            candidaturasRealizadas = [];
+            document.getElementById('area-autenticacao').classList.remove('hidden');
+            document.getElementById('portal-vagas').classList.add('hidden');
+            document.getElementById('portal-detalhe-vaga').classList.add('hidden');
+            document.getElementById('form-cv').reset();
+            renderizarAcoesHeader();
+        }
+    </script>
+</body>
+</html>
