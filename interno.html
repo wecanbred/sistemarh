@@ -13,100 +13,102 @@
 </head>
 <body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col">
 
-    <!-- HEADER DO TIME INTERNO -->
     <header class="bg-blue-950 text-white px-8 py-4 flex justify-between items-center shadow-md">
         <div class="flex items-center gap-3">
             <i data-lucide="shield" class="text-blue-400 w-6 h-6"></i>
-            <h1 class="text-lg font-bold tracking-wide">CoreHR <span class="text-blue-400 font-light font-mono text-sm">// Backoffice Interno</span></h1>
+            <h1 class="text-lg font-bold tracking-wide">CoreHR <span class="text-blue-400 font-light text-sm">// Backoffice Corporativo</span></h1>
         </div>
-        <div class="flex items-center gap-2 text-xs text-blue-200">
-            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-            Ambiente Seguro Administrador
-        </div>
+        <button onclick="carregarDadosTriagem()" class="bg-blue-800 hover:bg-blue-700 text-white text-xs px-3 py-1.5 rounded-lg flex items-center gap-2 transition-all">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Sincronizar Candidatos
+        </button>
     </header>
 
-    <!-- ÁREA INTERNA DO RH -->
     <main class="flex-1 p-8 max-w-7xl w-full mx-auto space-y-6">
         
-        <div class="flex justify-between items-center bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-            <div>
-                <h2 class="text-xl font-bold text-gray-900">Módulo ATS & Triagem</h2>
-                <p class="text-xs text-gray-500 mt-0.5">Controle interno de requisições de pessoal e fluxo de eSocial preliminar.</p>
-            </div>
-            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
-                <i data-lucide="plus" class="w-4 h-4"></i> Abrir Nova Requisição de Vaga
-            </button>
+        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+            <h2 class="text-xl font-bold text-gray-900">Módulo ATS & Banco de Dados eSocial</h2>
+            <p class="text-xs text-gray-500 mt-0.5">Triagem analítica contendo a documentação completa capturada na entrada externa do sistema.</p>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- FILA DE ENTRADA DO ATS -->
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+            <div class="p-4 bg-gray-50 border-b border-gray-200 font-bold text-sm text-gray-700 uppercase tracking-wider">
+                Fila Ativa de Currículos Cadastrados
+            </div>
             
-            <!-- Controle Interno de Vagas Ativas -->
-            <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
-                <h3 class="font-bold text-xs uppercase tracking-wider text-gray-400 border-b pb-2 flex justify-between items-center">
-                    Anúncios no Ar <span>2 Vagas</span>
-                </h3>
-                <div class="space-y-3">
-                    <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
-                        <h4 class="font-bold text-sm text-gray-900">Analista de Logística Onsite</h4>
-                        <p class="text-xs text-gray-500 mt-1">Candidaturas recebidas: <strong class="text-blue-600">3</strong></p>
-                    </div>
-                    <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
-                        <h4 class="font-bold text-sm text-gray-900">Supervisor de Transportes</h4>
-                        <p class="text-xs text-gray-500 mt-1">Candidaturas recebidas: <strong class="text-blue-600">1</strong></p>
-                    </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm">
+                    <thead>
+                        <tr class="bg-gray-100/50 text-gray-500 text-xs font-semibold border-b border-gray-200">
+                            <th class="p-4">Candidato / Contato</th>
+                            <th class="p-4">Documentação Base</th>
+                            <th class="p-4">Endereço Residencial</th>
+                            <th class="p-4">Vagas de Interesse</th>
+                            <th class="p-4">Resumo Técnico</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-rh-triagem" class="divide-y divide-gray-200">
+                        <!-- Gerado dinamicamente -->
+                    </tbody>
+                </table>
+                <div id="aviso-vazio" class="hidden p-12 text-center text-gray-400 text-sm flex flex-col items-center justify-center">
+                    <i data-lucide="inbox" class="w-10 h-10 text-gray-300 mb-2"></i>
+                    Nenhum candidato localizado no banco local. Cadastre uma conta no portal externo primeiro.
                 </div>
             </div>
-
-            <!-- Fila de Triagem Estruturada -->
-            <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between">
-                <div>
-                    <div class="p-6 border-b border-gray-200">
-                        <h3 class="font-bold text-xs uppercase tracking-wider text-gray-400">Fila de Entrada para Avaliação</h3>
-                    </div>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm">
-                            <thead>
-                                <tr class="bg-gray-50 text-gray-500 text-xs font-semibold border-b border-gray-200">
-                                    <th class="p-4">Candidato</th>
-                                    <th class="p-4">CPF (Validado)</th>
-                                    <th class="p-4">Vaga Pretendida</th>
-                                    <th class="p-4 text-right">Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-100 text-gray-700">
-                                <tr>
-                                    <td class="p-4 font-semibold text-gray-900">Marcos Antônio Souza</td>
-                                    <td class="p-4 font-mono text-xs text-gray-500">123.456.789-00</td>
-                                    <td class="p-4">Analista de Logística Onsite</td>
-                                    <td class="p-4 text-right">
-                                        <button class="text-xs font-bold text-blue-600 hover:underline mr-3">Avaliar Currículo</button>
-                                        <button class="text-xs font-bold text-green-600 hover:underline">Aprovar p/ Entrevista</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="p-4 font-semibold text-gray-900">Juliana Ribeiro Mendes</td>
-                                    <td class="p-4 font-mono text-xs text-gray-500">987.654.321-11</td>
-                                    <td class="p-4">Supervisor de Transportes</td>
-                                    <td class="p-4 text-right">
-                                        <button class="text-xs font-bold text-blue-600 hover:underline mr-3">Avaliar Currículo</button>
-                                        <button class="text-xs font-bold text-green-600 hover:underline">Aprovar p/ Entrevista</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="p-4 bg-gray-50 border-t border-gray-100 text-xs text-gray-500 flex items-center gap-1">
-                    <i data-lucide="info" class="w-3.5 h-3.5 text-blue-500"></i>
-                    CPFs higienizados na entrada. Pronto para integração com o leiaute S-2200 na etapa de Admissão.
-                </div>
-            </div>
-
         </div>
     </main>
 
     <script>
+        const dictVagas = { 101: "Analista de Logística Onsite", 102: "Supervisor de Transportes" };
+
         window.onload = function() {
+            lucide.createIcons();
+            carregarDadosTriagem();
+        };
+
+        function carregarDadosTriagem() {
+            const dados = JSON.parse(localStorage.getItem('corehr_candidatos')) || [];
+            const tbody = document.getElementById('tabela-rh-triagem');
+            const aviso = document.getElementById('aviso-vazio');
+
+            tbody.innerHTML = '';
+
+            if(dados.length === 0) {
+                aviso.classList.remove('hidden');
+                return;
+            }
+            aviso.classList.add('hidden');
+
+            dados.forEach(c => {
+                // Mapeia os IDs das vagas para nomes legíveis
+                const nomesVagas = c.vagasInscritas.map(id => `<span class="inline-block bg-blue-50 text-blue-700 text-[11px] px-2 py-0.5 rounded font-medium border border-blue-100 my-0.5">${dictVagas[id]}</span>`).join(' ') || '<span class="text-gray-400 italic text-xs">Nenhuma aplicação feita</span>';
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-gray-50/60 transition-colors text-xs align-top">
+                        <td class="p-4 space-y-1">
+                            <p class="font-bold text-sm text-gray-900">${c.nome}</p>
+                            <p class="text-gray-500 font-medium">${c.email}</p>
+                            <p class="text-gray-400 font-medium">${c.tel}</p>
+                        </td>
+                        <td class="p-4 space-y-1 font-mono">
+                            <p><strong>CPF:</strong> ${c.cpf}</p>
+                            <p><strong>RG:</strong> ${c.rg}</p>
+                            <p><strong>PIS:</strong> ${c.pis}</p>
+                            <p class="font-sans text-gray-500"><strong>Gen/Raça:</strong> ${c.genero} / ${c.raca}</p>
+                        </td>
+                        <td class="p-4 text-gray-600 max-w-xs leading-relaxed font-medium">
+                            ${c.endereco}
+                        </td>
+                        <td class="p-4">
+                            ${nomesVagas}
+                        </td>
+                        <td class="p-4 text-gray-600 max-w-sm leading-relaxed">
+                            <p class="bg-gray-50 p-2.5 rounded border border-gray-200 whitespace-pre-line">${c.resumo}</p>
+                        </td>
+                    </tr>
+                `;
+            });
             lucide.createIcons();
         }
     </script>
