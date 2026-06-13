@@ -13,9 +13,8 @@
 </head>
 <body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col">
 
-   <!-- HEADER DO TIME INTERNO -->
+    <!-- HEADER DO TIME INTERNO -->
     <header class="bg-blue-950 text-white px-8 py-4 flex justify-between items-center shadow-md">
-        <!-- Logo agora é um link clicável que aponta para o index.html -->
         <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
             <i data-lucide="shield" class="text-blue-400 w-6 h-6"></i>
             <span class="text-lg font-bold tracking-wide">CoreHR <span class="text-blue-400 font-light text-sm">// Backoffice Corporativo</span></span>
@@ -24,42 +23,171 @@
             <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Sincronizar Candidatos
         </button>
     </header>
-    
+
+    <!-- PAINEL PRINCIPAL -->
     <main class="flex-1 p-8 max-w-7xl w-full mx-auto space-y-6">
         
-        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-            <h2 class="text-xl font-bold text-gray-900">Módulo ATS & Banco de Dados eSocial</h2>
-            <p class="text-xs text-gray-500 mt-0.5">Triagem analítica contendo a documentação completa capturada na entrada externa do sistema.</p>
+        <!-- INDICADORES MACRO -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center gap-4">
+                <div class="p-3 rounded-lg bg-blue-50 text-blue-600"><i data-lucide="users" class="w-6 h-6"></i></div>
+                <div>
+                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Total de Currículos</p>
+                    <h3 id="card-total-candidatos" class="text-2xl font-black text-gray-900">0</h3>
+                </div>
+            </div>
+            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center gap-4">
+                <div class="p-3 rounded-lg bg-amber-50 text-amber-600"><i data-lucide="briefcase" class="w-6 h-6"></i></div>
+                <div>
+                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Vagas Divulgadas</p>
+                    <h3 class="text-2xl font-black text-gray-900">2</h3>
+                </div>
+            </div>
+            <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center gap-4">
+                <div class="p-3 rounded-lg bg-emerald-50 text-emerald-600"><i data-lucide="shield-check" class="w-6 h-6"></i></div>
+                <div>
+                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider">Conformidade LGPD</p>
+                    <h3 class="text-sm font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md mt-1 inline-block">100% Tratados</h3>
+                </div>
+            </div>
         </div>
 
-        <!-- FILA DE ENTRADA DO ATS -->
+        <!-- TABELA DE TRIAGEM ATS -->
         <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-            <div class="p-4 bg-gray-50 border-b border-gray-200 font-bold text-sm text-gray-700 uppercase tracking-wider">
-                Fila Ativa de Currículos Cadastrados
+            <div class="p-5 border-b border-gray-200 bg-gray-50/50 flex justify-between items-center">
+                <div>
+                    <h3 class="font-bold text-gray-900 text-base">Fila do Funil de Recrutamento</h3>
+                    <p class="text-xs text-gray-500 mt-0.5">Clique em "Análise Avançada" para extrair a ficha detalhada do profissional.</p>
+                </div>
             </div>
             
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-sm">
                     <thead>
-                        <tr class="bg-gray-100/50 text-gray-500 text-xs font-semibold border-b border-gray-200">
-                            <th class="p-4">Candidato / Contato</th>
-                            <th class="p-4">Documentação Base</th>
-                            <th class="p-4">Endereço Residencial</th>
-                            <th class="p-4">Vagas de Interesse</th>
-                            <th class="p-4">Resumo Técnico</th>
+                        <tr class="bg-gray-100/70 text-gray-500 text-xs font-bold border-b border-gray-200 uppercase tracking-wider">
+                            <th class="p-4">Candidato / Localização</th>
+                            <th class="p-4">Pretensão / Vaga Pretendida</th>
+                            <th class="p-4">Última Empresa / Cargo</th>
+                            <th class="p-4">Escolaridade</th>
+                            <th class="p-4 text-center">Ação</th>
                         </tr>
                     </thead>
-                    <tbody id="tabela-rh-triagem" class="divide-y divide-gray-200">
-                        <!-- Gerado dinamicamente -->
+                    <tbody id="tabela-rh-triagem" class="divide-y divide-gray-200 text-gray-700">
+                        <!-- Conteúdo inserido dinamicamente -->
                     </tbody>
                 </table>
-                <div id="aviso-vazio" class="hidden p-12 text-center text-gray-400 text-sm flex flex-col items-center justify-center">
-                    <i data-lucide="inbox" class="w-10 h-10 text-gray-300 mb-2"></i>
-                    Nenhum candidato localizado no banco local. Cadastre uma conta no portal externo primeiro.
+                
+                <!-- AVISO DE BANCO VAZIO -->
+                <div id="aviso-vazio" class="hidden p-16 text-center text-gray-400 flex flex-col items-center justify-center">
+                    <i data-lucide="folder-open" class="w-12 h-12 text-gray-300 mb-3"></i>
+                    <p class="text-sm font-semibold">Nenhum currículo localizado no banco de dados.</p>
+                    <p class="text-xs text-gray-400 mt-1">Realize cadastros de teste no portal externo para vê-los aqui.</p>
                 </div>
             </div>
         </div>
     </main>
+
+    <!-- MODAL DE ANÁLISE COMPLETA (FICHA DE TRIAGEM) -->
+    <div id="modal-analise" class="hidden fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-200 flex flex-col">
+            
+            <!-- TOPO DO MODAL -->
+            <div class="p-6 border-b border-gray-100 bg-gray-50 flex justify-between items-start">
+                <div>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100" id="modal-txt-vaga">Vaga</span>
+                    <h3 class="text-xl font-bold text-gray-900 mt-2" id="modal-txt-nome">Nome do Candidato</h3>
+                    <p class="text-xs text-gray-500 mt-1 flex items-center gap-1"><i data-lucide="map-pin" class="w-3.5 h-3.5"></i> <span id="modal-txt-local">Cidade</span></p>
+                </div>
+                <button onclick="fecharModalAnalise()" class="text-gray-400 hover:text-gray-600 p-1.5 rounded-lg bg-white border border-gray-200 shadow-sm"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+
+            <!-- CORPO DO MODAL (OS 6 PILARES ESTRUTURADOS) -->
+            <div class="p-6 space-y-6 text-sm overflow-y-auto">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- 1. Dados Pessoais e de Contato -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-xs uppercase tracking-wider text-gray-400 flex items-center gap-1.5"><i data-lucide="contact" class="w-4 h-4 text-blue-500"></i> Contato Base</h4>
+                        <div class="bg-gray-50 p-3 rounded-lg space-y-1 text-xs">
+                            <p><strong>E-mail:</strong> <span id="modal-txt-email"></span></p>
+                            <p><strong>Telefone/WhatsApp:</strong> <span id="modal-txt-tel"></span></p>
+                            <p><strong>LinkedIn:</strong> <span id="modal-txt-linkedin" class="text-blue-600 truncate block"></span></p>
+                        </div>
+                    </div>
+
+                    <!-- 2. Preferências e Pretensão -->
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-xs uppercase tracking-wider text-gray-400 flex items-center gap-1.5"><i data-lucide="sliders" class="w-4 h-4 text-blue-500"></i> Alinhamento de Expectativas</h4>
+                        <div class="bg-gray-50 p-3 rounded-lg space-y-1 text-xs">
+                            <p><strong>Modalidade Preferida:</strong> <span id="modal-txt-modalidade"></span></p>
+                            <p><strong>Modelo de Contrato:</strong> <span id="modal-txt-contrato"></span></p>
+                            <p><strong>Pretensão Salarial:</strong> R$ <span id="modal-txt-pretensao"></span> / mês</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. Histórico Profissional -->
+                <div class="space-y-2 border-t border-gray-100 pt-4">
+                    <h4 class="font-bold text-xs uppercase tracking-wider text-gray-400 flex items-center gap-1.5"><i data-lucide="history" class="w-4 h-4 text-blue-500"></i> Experiência Recente</h4>
+                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h5 class="font-bold text-gray-900 text-sm" id="modal-txt-exp-cargo">Cargo</h5>
+                                <p class="text-xs text-gray-600 font-medium" id="modal-txt-exp-empresa">Empresa</p>
+                            </div>
+                            <span class="text-xs font-mono bg-white px-2 py-0.5 rounded border border-gray-300 text-gray-500" id="modal-txt-exp-periodo">Período</span>
+                        </div>
+                        <p class="text-xs text-gray-600 leading-relaxed whitespace-pre-line bg-white p-2.5 rounded border border-gray-100" id="modal-txt-exp-atividades">Atividades</p>
+                    </div>
+                </div>
+
+                <!-- 4. Formação Acadêmica & 5. Competências -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-gray-100 pt-4">
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-xs uppercase tracking-wider text-gray-400 flex items-center gap-1.5"><i data-lucide="graduation-cap" class="w-4 h-4 text-blue-500"></i> Educação</h4>
+                        <div class="bg-gray-50 p-3 rounded-lg text-xs space-y-1">
+                            <p class="font-bold text-gray-800" id="modal-txt-acad-nivel">Nível</p>
+                            <p><span id="modal-txt-acad-curso">Curso</span></p>
+                            <p class="text-gray-500" id="modal-txt-acad-instituicao">Instituição</p>
+                            <p class="text-gray-400 font-medium" id="modal-txt-acad-status">Status</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h4 class="font-bold text-xs uppercase tracking-wider text-gray-400 flex items-center gap-1.5"><i data-lucide="sparkles" class="w-4 h-4 text-blue-500"></i> Conhecimentos e Tecnologias</h4>
+                        <div class="bg-gray-50 p-3 rounded-lg text-xs space-y-2">
+                            <p><strong>Idiomas:</strong> <span id="modal-txt-comp-idiomas"></span></p>
+                            <p><strong>Sistemas e Ferramentas:</strong> <span id="modal-txt-comp-ferramentas"></span></p>
+                            <p><strong>Certificados:</strong> <span id="modal-txt-comp-certificacoes"></span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. Anexos e Rastreabilidade LGPD -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 border-t border-gray-100 pt-4 text-xs">
+                    <div class="p-3 bg-gray-50 rounded-lg flex items-center justify-between border border-gray-200">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="paperclip" class="w-4 h-4 text-gray-400"></i>
+                            <div>
+                                <p class="font-bold text-gray-700">Currículo Original Anexado</p>
+                                <p class="text-[11px] text-gray-400" id="modal-txt-anexo">nome_arquivo.pdf</p>
+                            </div>
+                        </div>
+                        <span class="text-[10px] font-bold text-gray-400 bg-white border border-gray-300 px-2 py-1 rounded shadow-sm">Simulado</span>
+                    </div>
+
+                    <div class="p-3 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-lg flex items-start gap-2">
+                        <i data-lucide="lock" class="w-4 h-4 text-emerald-600 mt-0.5 shrink-0"></i>
+                        <div>
+                            <p class="font-bold">Termo LGPD Aceito</p>
+                            <p class="text-[10px] text-emerald-600 leading-relaxed mt-0.5">Autorização concedida via checkbox obrigatório no momento do envio do currículo.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <script>
         const dictVagas = { 101: "Analista de Logística Onsite", 102: "Supervisor de Transportes" };
@@ -73,7 +201,9 @@
             const dados = JSON.parse(localStorage.getItem('corehr_candidatos')) || [];
             const tbody = document.getElementById('tabela-rh-triagem');
             const aviso = document.getElementById('aviso-vazio');
+            const totalCard = document.getElementById('card-total-candidatos');
 
+            totalCard.innerText = dados.length;
             tbody.innerHTML = '';
 
             if(dados.length === 0) {
@@ -82,36 +212,87 @@
             }
             aviso.classList.add('hidden');
 
-            dados.forEach(c => {
-                // Mapeia os IDs das vagas para nomes legíveis
-                const nomesVagas = c.vagasInscritas.map(id => `<span class="inline-block bg-blue-50 text-blue-700 text-[11px] px-2 py-0.5 rounded font-medium border border-blue-100 my-0.5">${dictVagas[id]}</span>`).join(' ') || '<span class="text-gray-400 italic text-xs">Nenhuma aplicação feita</span>';
+            dados.forEach((c, index) => {
+                const nomesVagas = c.vagasInscritas.map(id => `
+                    <span class="inline-block bg-blue-50 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded border border-blue-100 uppercase tracking-wide">
+                        ${dictVagas[id]}
+                    </span>
+                `).join(' ') || '<span class="text-gray-400 italic text-xs">Banco de Talentos</span>';
 
                 tbody.innerHTML += `
-                    <tr class="hover:bg-gray-50/60 transition-colors text-xs align-top">
-                        <td class="p-4 space-y-1">
+                    <tr class="hover:bg-gray-50/60 transition-colors text-xs">
+                        <td class="p-4">
                             <p class="font-bold text-sm text-gray-900">${c.nome}</p>
-                            <p class="text-gray-500 font-medium">${c.email}</p>
-                            <p class="text-gray-400 font-medium">${c.tel}</p>
+                            <p class="text-gray-500 font-medium">${c.localizacao}</p>
                         </td>
-                        <td class="p-4 space-y-1 font-mono">
-                            <p><strong>CPF:</strong> ${c.cpf}</p>
-                            <p><strong>RG:</strong> ${c.rg}</p>
-                            <p><strong>PIS:</strong> ${c.pis}</p>
-                            <p class="font-sans text-gray-500"><strong>Gen/Raça:</strong> ${c.genero} / ${c.raca}</p>
-                        </td>
-                        <td class="p-4 text-gray-600 max-w-xs leading-relaxed font-medium">
-                            ${c.endereco}
+                        <td class="p-4 space-y-1.5">
+                            <p class="font-semibold text-gray-600">R$ ${c.pretensaoSalarial}</p>
+                            <div>${nomesVagas}</div>
                         </td>
                         <td class="p-4">
-                            ${nomesVagas}
+                            <p class="font-bold text-gray-800">${c.experienca.cargo}</p>
+                            <p class="text-gray-500 font-medium">${c.experienca.empresa}</p>
                         </td>
-                        <td class="p-4 text-gray-600 max-w-sm leading-relaxed">
-                            <p class="bg-gray-50 p-2.5 rounded border border-gray-200 whitespace-pre-line">${c.resumo}</p>
+                        <td class="p-4">
+                            <p class="font-semibold text-gray-700">${c.academico.nivel}</p>
+                            <p class="text-gray-500 text-[11px] font-medium max-w-[150px] truncate">${c.academico.curso}</p>
+                        </td>
+                        <td class="p-4 text-center">
+                            <button onclick="abrirModalAnalise(${index})" class="bg-white hover:bg-gray-50 text-blue-600 border border-gray-300 font-bold px-3 py-1.5 rounded-lg shadow-sm transition-all text-xs flex items-center gap-1 mx-auto">
+                                <i data-lucide="eye" class="w-3.5 h-3.5"></i> Análise Avançada
+                            </button>
                         </td>
                     </tr>
                 `;
             });
             lucide.createIcons();
+        }
+
+        function abrirModalAnalise(index) {
+            const dados = JSON.parse(localStorage.getItem('corehr_candidatos'));
+            const c = dados[index];
+
+            // Injeta os dados mapeados nos campos correspondentes do Modal
+            document.getElementById('modal-txt-vaga').innerText = c.vagasInscritas.map(id => dictVagas[id]).join(', ') || 'Banco de Talentos';
+            document.getElementById('modal-txt-nome').innerText = c.nome;
+            document.getElementById('modal-txt-local').innerText = c.localizacao;
+            document.getElementById('modal-txt-email').innerText = c.email;
+            document.getElementById('modal-txt-tel').innerText = c.tel;
+            
+            const lkd = document.getElementById('modal-txt-linkedin');
+            lkd.innerText = c.linkedin;
+            lkd.href = c.linkedin.startsWith('http') ? c.linkedin : '#';
+
+            document.getElementById('modal-txt-modalidade').innerText = c.modalidadePref;
+            document.getElementById('modal-txt-contrato').innerText = c.contratoPref;
+            document.getElementById('modal-txt-pretensao').innerText = c.pretensaoSalarial;
+
+            // Histórico
+            document.getElementById('modal-txt-exp-cargo').innerText = c.experienca.cargo;
+            document.getElementById('modal-txt-exp-empresa').innerText = c.experienca.empresa;
+            document.getElementById('modal-txt-exp-periodo').innerText = c.experienca.periodo;
+            document.getElementById('modal-txt-exp-atividades').innerText = c.experienca.atividades;
+
+            // Acadêmico
+            document.getElementById('modal-txt-acad-nivel').innerText = c.academico.nivel;
+            document.getElementById('modal-txt-acad-curso').innerText = c.academico.curso;
+            document.getElementById('modal-txt-acad-instituicao').innerText = c.academico.instituicao;
+            document.getElementById('modal-txt-acad-status').innerText = c.academico.status;
+
+            // Competências
+            document.getElementById('modal-txt-comp-idiomas').innerText = c.competencias.idiomas;
+            document.getElementById('modal-txt-comp-ferramentas').innerText = c.competencias.ferramentas;
+            document.getElementById('modal-txt-comp-certificacoes').innerText = c.competencias.certificacoes;
+
+            document.getElementById('modal-txt-anexo').innerText = c.anexoNome;
+
+            // Exibe a janela modal
+            document.getElementById('modal-analise').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function fecharModalAnalise() {
+            document.getElementById('modal-analise').classList.add('hidden');
         }
     </script>
 </body>
