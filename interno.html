@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Corporativo - CoreHR</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col">
+
+    <!-- HEADER DO TIME INTERNO -->
+    <header class="bg-blue-950 text-white px-8 py-4 flex justify-between items-center shadow-md">
+        <div class="flex items-center gap-3">
+            <i data-lucide="shield" class="text-blue-400 w-6 h-6"></i>
+            <h1 class="text-lg font-bold tracking-wide">CoreHR <span class="text-blue-400 font-light font-mono text-sm">// Backoffice Interno</span></h1>
+        </div>
+        <div class="flex items-center gap-2 text-xs text-blue-200">
+            <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+            Ambiente Seguro Administrador
+        </div>
+    </header>
+
+    <!-- ÁREA INTERNA DO RH -->
+    <main class="flex-1 p-8 max-w-7xl w-full mx-auto space-y-6">
+        
+        <div class="flex justify-between items-center bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div>
+                <h2 class="text-xl font-bold text-gray-900">Módulo ATS & Triagem</h2>
+                <p class="text-xs text-gray-500 mt-0.5">Controle interno de requisições de pessoal e fluxo de eSocial preliminar.</p>
+            </div>
+            <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
+                <i data-lucide="plus" class="w-4 h-4"></i> Abrir Nova Requisição de Vaga
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Controle Interno de Vagas Ativas -->
+            <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
+                <h3 class="font-bold text-xs uppercase tracking-wider text-gray-400 border-b pb-2 flex justify-between items-center">
+                    Anúncios no Ar <span>2 Vagas</span>
+                </h3>
+                <div class="space-y-3">
+                    <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                        <h4 class="font-bold text-sm text-gray-900">Analista de Logística Onsite</h4>
+                        <p class="text-xs text-gray-500 mt-1">Candidaturas recebidas: <strong class="text-blue-600">3</strong></p>
+                    </div>
+                    <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+                        <h4 class="font-bold text-sm text-gray-900">Supervisor de Transportes</h4>
+                        <p class="text-xs text-gray-500 mt-1">Candidaturas recebidas: <strong class="text-blue-600">1</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fila de Triagem Estruturada -->
+            <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col justify-between">
+                <div>
+                    <div class="p-6 border-b border-gray-200">
+                        <h3 class="font-bold text-xs uppercase tracking-wider text-gray-400">Fila de Entrada para Avaliação</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-sm">
+                            <thead>
+                                <tr class="bg-gray-50 text-gray-500 text-xs font-semibold border-b border-gray-200">
+                                    <th class="p-4">Candidato</th>
+                                    <th class="p-4">CPF (Validado)</th>
+                                    <th class="p-4">Vaga Pretendida</th>
+                                    <th class="p-4 text-right">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100 text-gray-700">
+                                <tr>
+                                    <td class="p-4 font-semibold text-gray-900">Marcos Antônio Souza</td>
+                                    <td class="p-4 font-mono text-xs text-gray-500">123.456.789-00</td>
+                                    <td class="p-4">Analista de Logística Onsite</td>
+                                    <td class="p-4 text-right">
+                                        <button class="text-xs font-bold text-blue-600 hover:underline mr-3">Avaliar Currículo</button>
+                                        <button class="text-xs font-bold text-green-600 hover:underline">Aprovar p/ Entrevista</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-4 font-semibold text-gray-900">Juliana Ribeiro Mendes</td>
+                                    <td class="p-4 font-mono text-xs text-gray-500">987.654.321-11</td>
+                                    <td class="p-4">Supervisor de Transportes</td>
+                                    <td class="p-4 text-right">
+                                        <button class="text-xs font-bold text-blue-600 hover:underline mr-3">Avaliar Currículo</button>
+                                        <button class="text-xs font-bold text-green-600 hover:underline">Aprovar p/ Entrevista</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="p-4 bg-gray-50 border-t border-gray-100 text-xs text-gray-500 flex items-center gap-1">
+                    <i data-lucide="info" class="w-3.5 h-3.5 text-blue-500"></i>
+                    CPFs higienizados na entrada. Pronto para integração com o leiaute S-2200 na etapa de Admissão.
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        window.onload = function() {
+            lucide.createIcons();
+        }
+    </script>
+</body>
+</html>
