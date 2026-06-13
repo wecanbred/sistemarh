@@ -13,16 +13,18 @@
 </head>
 <body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col">
 
+   <!-- HEADER DO TIME INTERNO -->
     <header class="bg-blue-950 text-white px-8 py-4 flex justify-between items-center shadow-md">
-        <div class="flex items-center gap-3">
+        <!-- Logo agora é um link clicável que aponta para o index.html -->
+        <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition-opacity cursor-pointer">
             <i data-lucide="shield" class="text-blue-400 w-6 h-6"></i>
-            <h1 class="text-lg font-bold tracking-wide">CoreHR <span class="text-blue-400 font-light text-sm">// Backoffice Corporativo</span></h1>
-        </div>
+            <span class="text-lg font-bold tracking-wide">CoreHR <span class="text-blue-400 font-light text-sm">// Backoffice Corporativo</span></span>
+        </a>
         <button onclick="carregarDadosTriagem()" class="bg-blue-800 hover:bg-blue-700 text-white text-xs px-3 py-1.5 rounded-lg flex items-center gap-2 transition-all">
             <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Sincronizar Candidatos
         </button>
     </header>
-
+    
     <main class="flex-1 p-8 max-w-7xl w-full mx-auto space-y-6">
         
         <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
