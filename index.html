@@ -3,538 +3,311 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CoreHR - Sistema Integrado de RH</title>
+    <title>CoreHR - Módulo de Recrutamento (ATS)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
-        .sidebar-item.active { @apply bg-blue-700 text-white; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800 flex h-screen overflow-hidden">
+<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col">
 
-    <aside class="w-64 bg-blue-900 text-blue-100 flex flex-col justify-between z-10 flex-shrink-0">
-        <div>
-            <div class="p-5 flex items-center gap-3 bg-blue-950">
-                <i data-lucide="layers" class="text-blue-400 w-8 h-8"></i>
-                <span class="text-xl font-bold tracking-wider text-white">CoreHR</span>
-            </div>
-            
-            <nav class="p-4 space-y-1">
-                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-blue-800 text-left font-medium active">
-                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i> Dashboard
-                </button>
-                <button onclick="switchTab('recrutamento')" id="btn-recrutamento" class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-blue-800 text-left font-medium">
-                    <i data-lucide="user-plus" class="w-5 h-5"></i> Recrutamento (ATS)
-                </button>
-                <button onclick="switchTab('colaboradores')" id="btn-colaboradores" class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-blue-800 text-left font-medium">
-                    <i data-lucide="users" class="w-5 h-5"></i> Colaboradores
-                </button>
-                <button onclick="switchTab('folha')" id="btn-folha" class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-blue-800 text-left font-medium">
-                    <i data-lucide="banknote" class="w-5 h-5"></i> Folha de Pagamento
-                </button>
-                <button onclick="switchTab('chat')" id="btn-chat" class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-blue-800 text-left font-medium flex justify-between">
-                    <div class="flex items-center gap-3">
-                        <i data-lucide="message-square" class="w-5 h-5"></i> Chat Interno
-                    </div>
-                    <span class="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full" id="chat-badge">3</span>
-                </button>
-                <button onclick="switchTab('rescisao')" id="btn-rescisao" class="sidebar-item w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-blue-800 text-left font-medium">
-                    <i data-lucide="user-minus" class="w-5 h-5"></i> Desligamento / Rescisão
-                </button>
-            </nav>
+    <header class="bg-blue-900 text-white px-8 py-4 flex justify-between items-center shadow-md">
+        <div class="flex items-center gap-3">
+            <i data-lucide="briefcase" class="text-blue-400 w-6 h-6"></i>
+            <h1 class="text-lg font-bold tracking-wide">CoreHR // Módulo ATS</h1>
         </div>
-
-        <div class="p-4 border-t border-blue-800 bg-blue-950 flex items-center gap-3">
-            <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center font-bold text-white">
-                HR
-            </div>
-            <div class="overflow-hidden">
-                <p class="text-sm font-semibold text-white truncate">Administrador</p>
-                <p class="text-xs text-blue-300 truncate">WeCan BR Operations</p>
-            </div>
+        <div class="flex bg-blue-950 p-1 rounded-lg border border-blue-800">
+            <button onclick="alternarVisao('rh')" id="btn-visao-rh" class="px-4 py-1.5 text-xs font-semibold rounded-md bg-blue-700 text-white transition-all">
+                Visão RH (Interno)
+            </button>
+            <button onclick="alternarVisao('candidato')" id="btn-visao-candidato" class="px-4 py-1.5 text-xs font-semibold rounded-md text-blue-300 hover:text-white transition-all">
+                Portal de Vagas (Externo)
+            </button>
         </div>
-    </aside>
+    </header>
 
-    <main class="flex-1 flex flex-col overflow-hidden">
-        
-        <header class="bg-white h-16 border-b border-gray-200 flex items-center justify-between px-8 flex-shrink-0">
-            <div class="flex items-center gap-4">
-                <h2 id="page-title" class="text-xl font-bold text-gray-800">Dashboard Geral</h2>
+    <main class="flex-1 p-8 max-w-7xl w-full mx-auto">
+
+        <div id="visao-rh" class="space-y-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                <div>
+                    <h2 class="text-xl font-bold text-gray-900">Gerenciamento de Vagas e Captação</h2>
+                    <p class="text-xs text-gray-500 mt-1">Cadastre novas oportunidades para atualizar o portal externo automaticamente.</p>
+                </div>
+                <button onclick="abrirModalVaga()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2">
+                    <i data-lucide="plus-circle" class="w-4 h-4"></i> Criar Novo Anúncio
+                </button>
             </div>
-            <div class="flex items-center gap-4">
-                <div class="relative">
-                    <i data-lucide="bell" class="w-6 h-6 text-gray-500 cursor-pointer hover:text-gray-700"></i>
-                    <span class="absolute -top-1 -right-1 bg-blue-600 w-2 h-2 rounded-full"></span>
-                </div>
-                <div class="h-6 w-[1px] bg-gray-200"></div>
-                <span class="text-sm text-gray-600 font-medium" id="current-date"></span>
-            </div>
-        </header>
 
-        <div class="flex-1 overflow-y-auto p-8 bg-gray-50">
-
-            <section id="mod-dashboard" class="tab-content space-y-6">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">Total Colaboradores</p>
-                            <h3 class="text-2xl font-bold mt-1 text-gray-900" id="dash-total-emp">1,342</h3>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-1 bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
+                    <h3 class="font-bold text-gray-900 border-b pb-2 flex items-center justify-between text-sm uppercase tracking-wider text-gray-500">
+                        Anúncios Ativos <span id="qtd-vagas" class="bg-gray-100 text-gray-700 text-xs px-2 py-0.5 rounded-full">2</span>
+                    </h3>
+                    <div id="lista-vagas-rh" class="space-y-3">
                         </div>
-                        <div class="p-3 bg-blue-50 text-blue-600 rounded-lg"><i data-lucide="users"></i></div>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">Vagas Abertas</p>
-                            <h3 class="text-2xl font-bold mt-1 text-gray-900">24</h3>
-                        </div>
-                        <div class="p-3 bg-green-50 text-green-600 rounded-lg"><i data-lucide="briefcase"></i></div>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">Folha Atual (Ref.)</p>
-                            <h3 class="text-2xl font-bold mt-1 text-gray-900">Junho/2026</h3>
-                        </div>
-                        <div class="p-3 bg-purple-50 text-purple-600 rounded-lg"><i data-lucide="calendar"></i></div>
-                    </div>
-                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
-                        <div>
-                            <p class="text-sm font-medium text-gray-500">Alertas eSocial</p>
-                            <h3 class="text-2xl font-bold mt-1 text-gray-900 text-green-600">0 Incidentes</h3>
-                        </div>
-                        <div class="p-3 bg-emerald-50 text-emerald-600 rounded-lg"><i data-lucide="shield-check"></i></div>
-                    </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm lg:col-span-2">
-                        <h4 class="font-bold text-gray-900 mb-4">Ações Operacionais Pendentes</h4>
-                        <div class="space-y-3">
-                            <div class="flex items-center justify-between p-3 bg-amber-50 border border-amber-200 rounded-lg text-sm">
-                                <div class="flex items-center gap-3 text-amber-800">
-                                    <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-600"></i>
-                                    <span>Existem <strong>4 admissões</strong> pendentes de envio para o eSocial (Evento S-2200).</span>
-                                </div>
-                                <button onclick="switchTab('colaboradores')" class="text-amber-700 font-semibold hover:underline">Resolver</button>
-                            </div>
-                            <div class="flex items-center justify-between p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm">
-                                <div class="flex items-center gap-3 text-blue-800">
-                                    <i data-lucide="info" class="w-5 h-5 text-blue-600"></i>
-                                    <span>Cálculo de provisionamento de férias concluído para a operação Shopee Hubs.</span>
-                                </div>
-                                <button onclick="switchTab('folha')" class="text-blue-700 font-semibold hover:underline">Conferir</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-                        <h4 class="font-bold text-gray-900 mb-4">Status de Integração</h4>
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-center text-sm">
-                                <span class="text-gray-600 font-medium">Governo Federal (eSocial)</span>
-                                <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">Online</span>
-                            </div>
-                            <div class="flex justify-between items-center text-sm">
-                                <span class="text-gray-600 font-medium">Bancos (Envio CNAB)</span>
-                                <span class="px-2 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">Pronto</span>
-                            </div>
-                            <div class="flex justify-between items-center text-sm">
-                                <span class="text-gray-600 font-medium">ERP Corporativo (Sinc)</span>
-                                <span class="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-semibold">Há 12 min</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="mod-recrutamento" class="tab-content hidden space-y-6">
-                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-                    <div class="flex justify-between items-center mb-6">
-                        <h3 class="text-lg font-bold text-gray-900">Pipeline de Vagas Ativas</h3>
-                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2">
-                            <i data-lucide="plus" class="w-4 h-4"></i> Nova Vaga
-                        </button>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="font-semibold text-gray-700">Triagem (12)</span>
-                            </div>
-                            <div class="space-y-3">
-                                <div class="bg-white p-3 rounded-lg border border-gray-200 shadow-sm">
-                                    <p class="font-semibold text-sm">Carlos Eduardo Silva</p>
-                                    <p class="text-xs text-gray-500">Vaga: Analista de Logística Onsite</p>
-                                </div>
-                                <div class="bg-white p-3 rounded-lg border border-gray-200 shadow-sm">
-                                    <p class="font-semibold text-sm">Mariana Costa Costa</p>
-                                    <p class="text-xs text-gray-500">Vaga: Supervisor de Operações</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="font-semibold text-gray-700">Entrevista Técnica (4)</span>
-                            </div>
-                            <div class="space-y-3">
-                                <div class="bg-white p-3 rounded-lg border border-amber-200 bg-amber-50/30 shadow-sm">
-                                    <p class="font-semibold text-sm">Rodrigo Souza Melo</p>
-                                    <p class="text-xs text-gray-500">Vaga: Líder de Atendimento</p>
-                                    <span class="inline-block mt-2 text-[10px] bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-medium">Hoje às 16:00</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
-                            <div class="flex justify-between items-center mb-3">
-                                <span class="font-semibold text-gray-700">Proposta / Admissão (2)</span>
-                            </div>
-                            <div class="space-y-3">
-                                <div class="bg-white p-3 rounded-lg border border-green-200 bg-green-50/20 shadow-sm flex justify-between items-center">
-                                    <div>
-                                        <p class="font-semibold text-sm">Aline Ferreira Santos</p>
-                                        <p class="text-xs text-gray-500">Vaga: Assistente Operacional</p>
-                                    </div>
-                                    <button onclick="promoverParaColaborador('Aline Ferreira Santos', 'Assistente Operacional', 'Operações')" class="text-xs bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded" title="Efetivar Admissão">
-                                        Contratar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="mod-colaboradores" class="tab-content hidden space-y-6">
-                <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                    <div class="p-6 border-b border-gray-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <h3 class="text-lg font-bold text-gray-900">Base Ativa de Funcionários</h3>
-                        <div class="flex gap-2">
-                            <input type="text" placeholder="Buscar por nome ou CPF..." class="px-4 py-2 border border-gray-300 rounded-lg text-sm w-64 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700">Filtrar</button>
-                        </div>
-                    </div>
-                    
+                <div class="lg:col-span-2 bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-4">
+                    <h3 class="font-bold text-gray-900 border-b pb-2 flex items-center justify-between text-sm uppercase tracking-wider text-gray-500">
+                        Banco de Currículos Recebidos <span id="qtd-cand" class="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full">0</span>
+                    </h3>
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
+                        <table class="w-full text-left text-sm">
                             <thead>
-                                <tr class="bg-gray-50 text-gray-600 text-xs uppercase font-semibold border-b border-gray-200">
-                                    <th class="px-6 py-3">Nome</th>
-                                    <th class="px-6 py-3">Cargo / Setor</th>
-                                    <th class="px-6 py-3">Data de Admissão</th>
-                                    <th class="px-6 py-3">Status eSocial</th>
-                                    <th class="px-6 py-3 text-right">Ação</th>
+                                <tr class="bg-gray-50 text-gray-500 text-xs font-semibold border-b border-gray-200">
+                                    <th class="p-3">Candidato</th>
+                                    <th class="p-3">CPF (Validado)</th>
+                                    <th class="p-3">Vaga Alvo</th>
+                                    <th class="p-3">Fase Atual</th>
                                 </tr>
                             </thead>
-                            <tbody id="lista-colaboradores" class="divide-y divide-gray-200 text-sm">
+                            <tbody id="tabela-cand-rh" class="divide-y divide-gray-100">
                                 </tbody>
                         </table>
+                        <div id="sem-cand-aviso" class="p-8 text-center text-gray-400 text-sm flex flex-col items-center justify-center">
+                            <i data-lucide="users" class="w-8 h-8 text-gray-300 mb-2"></i>
+                            Nenhum currículo cadastrado para as vagas ativas até o momento.
+                        </div>
                     </div>
                 </div>
-            </section>
+            </div>
+        </div>
 
-            <section id="mod-folha" class="tab-content hidden space-y-6">
-                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm space-y-6">
-                    <div class="flex justify-between items-center">
+        <div id="visao-candidato" class="hidden space-y-8">
+            <div class="bg-gradient-to-r from-blue-800 to-indigo-900 text-white p-8 rounded-2xl shadow-md text-center">
+                <h2 class="text-2xl font-bold">Trabalhe Conosco - Oportunidades Integradas</h2>
+                <p class="text-sm text-blue-200 mt-2 max-w-xl mx-auto">Encontre sua próxima vaga operativa ou corporativa. Seu cadastro será analisado diretamente pelo nosso time de atração de talentos.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                <div class="lg:col-span-2 space-y-4">
+                    <h3 class="font-bold text-gray-900 text-lg">Vagas em Destaque</h3>
+                    <div id="portal-vagas-lista" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-md space-y-4 sticky top-6">
+                    <h3 class="font-bold text-gray-900 border-b pb-2 flex items-center gap-2 text-sm uppercase tracking-wider text-gray-600">
+                        <i data-lucide="file-text" class="text-blue-600 w-4 h-4"></i> Cadastrar meu Currículo
+                    </h3>
+                    <form id="form-cv" onsubmit="salvarCurriculo(event)" class="space-y-3">
                         <div>
-                            <h3 class="text-lg font-bold text-gray-900">Processamento da Folha Mensal</h3>
-                            <p class="text-xs text-gray-500">Competência ativa: Junho/2026</p>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Vaga Desejada</label>
+                            <select id="form-vaga-select" required class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                </select>
                         </div>
-                        <span class="px-3 py-1 bg-amber-100 text-amber-800 text-xs font-semibold rounded-full">Aguardando Fechamento</span>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 p-4 rounded-xl border border-gray-200">
-                        <div class="p-3">
-                            <span class="text-xs text-gray-500 block font-medium">Proventos Totais</span>
-                            <span class="text-xl font-bold text-gray-900">R$ 4.250.600,00</span>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Nome Completo</label>
+                            <input type="text" id="form-nome" required class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
-                        <div class="p-3 border-y md:border-y-0 md:border-x border-gray-200">
-                            <span class="text-xs text-gray-500 block font-medium">Descontos Globais (INSS/IRRF)</span>
-                            <span class="text-xl font-bold text-red-600">R$ 1.120.450,00</span>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">CPF (Apenas números)</label>
+                            <input type="text" id="form-cpf" maxlength="11" required placeholder="00000000000" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                         </div>
-                        <div class="p-3">
-                            <span class="text-xs text-gray-500 block font-medium">FGTS Provedor (Encargo)</span>
-                            <span class="text-xl font-bold text-blue-900">R$ 340.048,00</span>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">E-mail</label>
+                                <input type="email" id="form-email" required class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Telefone Celular</label>
+                                <input type="text" id="form-tel" required placeholder="(11) 99999-9999" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                        <div class="text-xs text-gray-600 max-w-md">
-                            <p>Ao fechar a folha, o sistema gerará automaticamente os arquivos de remessa <strong>CNAB 240</strong> bancários e transmitirá em lote os eventos <strong>S-1200 / S-1210</strong> para o eSocial.</p>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Resumo Curricular / Histórico</label>
+                            <textarea id="form-resumo" rows="4" required placeholder="Fale brevemente sobre suas últimas experiências profissionais..." class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                         </div>
-                        <button onclick="alert('Motor de cálculo rodando em background... Eventos S-1200 estruturados com sucesso!')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-lg font-semibold text-sm flex items-center gap-2 shadow-sm">
-                            <i data-lucide="calculator" class="w-4 h-4"></i> Calcular e Fechar Folha
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold py-2.5 rounded-lg shadow transition-colors">
+                            Enviar Candidatura
                         </button>
-                    </div>
+                    </form>
                 </div>
-            </section>
-
-            <section id="mod-chat" class="tab-content hidden h-[calc(100vh-12rem)] flex bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                <div class="w-80 border-r border-gray-200 flex flex-col bg-gray-50">
-                    <div class="p-4 border-b border-gray-200 font-bold text-gray-700 text-sm">Canais & Conversas</div>
-                    <div class="flex-1 overflow-y-auto divide-y divide-gray-100">
-                        <div class="p-4 bg-blue-50/50 border-l-4 border-blue-600 cursor-pointer flex justify-between items-start">
-                            <div>
-                                <p class="font-semibold text-sm text-gray-900"># geral-operacao</p>
-                                <p class="text-xs text-gray-500 truncate w-48 font-medium">Felipe: Ajuste na escala feito!</p>
-                            </div>
-                            <span class="bg-blue-600 text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold">3</span>
-                        </div>
-                        <div class="p-4 hover:bg-gray-100 cursor-pointer text-gray-600">
-                            <p class="font-semibold text-sm text-gray-800"># avisos-rh</p>
-                            <p class="text-xs text-gray-400 truncate w-48">Mural oficial de comunicados</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="flex-1 flex flex-col justify-between bg-white">
-                    <div class="p-4 border-b border-gray-200 flex items-center justify-between">
-                        <div>
-                            <p class="font-bold text-gray-900"># geral-operacao</p>
-                            <p class="text-xs text-gray-500">Canal interno para alinhamento rápido da equipe</p>
-                        </div>
-                        <i data-lucide="info" class="text-gray-400 w-5 h-5 cursor-pointer"></i>
-                    </div>
-
-                    <div class="flex-1 p-6 overflow-y-auto space-y-4 bg-gray-50/30" id="chat-messages">
-                        <div class="flex flex-col items-start max-w-lg">
-                            <div class="flex items-baseline gap-2 mb-1">
-                                <span class="font-bold text-xs text-gray-800">Aline Santos</span>
-                                <span class="text-[10px] text-gray-400">14:32</span>
-                            </div>
-                            <div class="bg-white p-3 rounded-xl rounded-tl-none border border-gray-200 shadow-sm text-sm text-gray-700">
-                                Conseguiram validar os espelhos de ponto da filial ontem?
-                            </div>
-                        </div>
-                        <div class="flex flex-col items-start max-w-lg">
-                            <div class="flex items-baseline gap-2 mb-1">
-                                <span class="font-bold text-xs text-gray-800">Felipe Frutuoso</span>
-                                <span class="text-[10px] text-gray-400">14:35</span>
-                            </div>
-                            <div class="bg-white p-3 rounded-xl rounded-tl-none border border-gray-200 shadow-sm text-sm text-gray-700">
-                                Sim, Aline! Ajuste na escala feito e já integrado na prévia da folha.
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="p-4 border-t border-gray-200 bg-white">
-                        <form id="chat-form" onsubmit="enviarMensagem(event)" class="flex gap-2">
-                            <input type="text" id="chat-input" placeholder="Escreva sua mensagem aqui..." class="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-semibold flex items-center justify-center">
-                                <i data-lucide="send" class="w-4 h-4"></i>
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </section>
-
-            <section id="mod-rescisao" class="tab-content hidden space-y-6">
-                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
-                    <h3 class="text-lg font-bold text-gray-900 mb-2">Desligamento e Termo de Rescisão</h3>
-                    <p class="text-xs text-gray-500 mb-6">Módulo para cálculo de verbas rescisórias, aviso prévio, e geração automática do evento <strong>S-2299 (Desligamento)</strong> para o eSocial.</p>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-4 border-r border-gray-100 pr-6">
-                            <h4 class="font-semibold text-sm text-gray-700 uppercase tracking-wider">Nova Rescisão</h4>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-600 mb-1">Selecione o Colaborador</label>
-                                <select id="rescisao-select-colaborador" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:ring-2 focus:ring-blue-500">
-                                    </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-600 mb-1">Motivo do Desligamento</label>
-                                <select class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white">
-                                    <option>Dispensa sem justa causa</option>
-                                    <option>Pedido de demissão</option>
-                                    <option>Dispensa por justa causa</option>
-                                    <option>Término de contrato de experiência</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-medium text-gray-600 mb-1">Tipo de Aviso Prévio</label>
-                                <select class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white">
-                                    <option>Indenizado</option>
-                                    <option>Trabalhado</option>
-                                    <option>Dispensado</option>
-                                </select>
-                            </div>
-                            <button onclick="calcularRescisao()" class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2 rounded-lg text-sm transition-colors">
-                                Calcular Verbas Rescisórias
-                            </button>
-                        </div>
-
-                        <div id="resultado-rescisao" class="bg-gray-50 p-6 rounded-xl border border-gray-200 flex flex-col justify-center items-center text-center text-gray-400">
-                            <i data-lucide="calculator" class="w-12 h-12 mb-2 text-gray-300"></i>
-                            <p class="text-sm">Selecione um funcionário e clique em calcular para processar a rescisão e gerar o arquivo de compliance.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
+            </div>
         </div>
     </main>
 
+    <div id="modal-vaga" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-xl shadow-xl max-w-md w-full overflow-hidden">
+            <div class="bg-blue-900 text-white p-4 flex justify-between items-center">
+                <h4 class="font-bold text-sm uppercase tracking-wide">Publicar Nova Vaga</h4>
+                <button onclick="fecharModalVaga()" class="text-blue-200 hover:text-white"><i data-lucide="x"></i></button>
+            </div>
+            <form onsubmit="salvarNovaVaga(event)" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Título do Cargo</label>
+                    <input type="text" id="mv-titulo" required placeholder="Ex: Líder de Operações Hub" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Departamento</label>
+                        <input type="text" id="mv-dep" required placeholder="Ex: Logística" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Modelo de Trabalho</label>
+                        <select id="mv-modelo" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg bg-gray-50">
+                            <option>Presencial</option>
+                            <option>Híbrido</option>
+                            <option>Home Office</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">Localidade da Operação</label>
+                    <input type="text" id="mv-local" required placeholder="Ex: São Paulo - SP (Hub Sul)" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="flex gap-2 justify-end pt-2">
+                    <button type="button" onclick="fecharModalVaga()" class="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-600 hover:bg-gray-50">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-semibold hover:bg-blue-700">Publicar Vaga</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
-        // Banco de dados simulado em memória (State)
-        let colaboradores = [
-            { id: 1, nome: "Carlos Eduardo Silva", cargo: "Analista Onsite", setor: "Operações", admissao: "12/05/2024", esocial: "Sincronizado" },
-            { id: 2, nome: "Mariana Costa", cargo: "Supervisor de Operações", setor: "Logística", admissao: "01/02/2023", esocial: "Sincronizado" },
-            { id: 3, nome: "Felipe Frutuoso", cargo: "Coordenador Regional", setor: "Operações", admissao: "15/10/2022", esocial: "Sincronizado" },
-            { id: 4, nome: "Aline Santos", cargo: "Analista de DP", setor: "Recursos Humanos", admissao: "22/07/2023", esocial: "Sincronizado" }
+        // Bancos de Dados Simulados (In Memory State)
+        let vagas = [
+            { id: 1, titulo: "Analista de Logística Onsite", departamento: "Operações", modelo: "Presencial", local: "São Paulo - SP" },
+            { id: 2, titulo: "Supervisor de Transportes", departamento: "Logística", modelo: "Presencial", local: "Rio de Janeiro - RJ" }
         ];
 
-        // Inicializador
+        let candidatos = [];
+
         window.onload = function() {
             lucide.createIcons();
-            document.getElementById('current-date').innerText = new Date().toLocaleDateString('pt-BR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            renderizarColaboradores();
-        }
+            atualizarDisplays();
+        };
 
-        // Navegação SPA
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
-            
-            document.getElementById(`mod-${tabId}`).classList.remove('hidden');
-            document.getElementById(`btn-${tabId}`).classList.add('active');
-            
-            // Ajustar Título da Página
-            const titulos = {
-                dashboard: 'Dashboard Geral',
-                recrutamento: 'Recrutamento & Seleção (ATS)',
-                colaboradores: 'Gestão de Colaboradores',
-                folha: 'Folha de Pagamento',
-                chat: 'Comunicação Interna',
-                rescisao: 'Módulo de Desligamento / Rescisão'
-            };
-            document.getElementById('page-title').innerText = titulos[tabId];
-            
-            if(tabId === 'chat') {
-                document.getElementById('chat-badge').classList.add('hidden');
+        // Troca de Telas (Abstração de Visões)
+        function alternarVisao(visao) {
+            const btnRH = document.getElementById('btn-visao-rh');
+            const btnCand = document.getElementById('btn-visao-candidato');
+            const boxRH = document.getElementById('visao-rh');
+            const boxCand = document.getElementById('visao-candidato');
+
+            if (visao === 'rh') {
+                boxRH.classList.remove('hidden');
+                boxCand.classList.add('hidden');
+                btnRH.className = "px-4 py-1.5 text-xs font-semibold rounded-md bg-blue-700 text-white transition-all";
+                btnCand.className = "px-4 py-1.5 text-xs font-semibold rounded-md text-blue-300 hover:text-white transition-all";
+            } else {
+                boxRH.classList.add('hidden');
+                boxCand.classList.remove('hidden');
+                btnCand.className = "px-4 py-1.5 text-xs font-semibold rounded-md bg-blue-700 text-white transition-all";
+                btnRH.className = "px-4 py-1.5 text-xs font-semibold rounded-md text-blue-300 hover:text-white transition-all";
             }
         }
 
-        // Renderizador da tabela de funcionários
-        function renderizarColaboradores() {
-            const tbody = document.getElementById('lista-colaboradores');
-            const selectRescisao = document.getElementById('rescisao-select-colaborador');
-            
-            tbody.innerHTML = '';
-            selectRescisao.innerHTML = '<option value="">-- Escolha um colaborador --</option>';
+        // Modais de Controle de Vaga
+        function abrirModalVaga() { document.getElementById('modal-vaga').classList.remove('hidden'); }
+        function fecharModalVaga() { document.getElementById('modal-vaga').classList.add('hidden'); }
 
-            colaboradores.forEach(colab => {
-                // Tabela
-                tbody.innerHTML += `
-                    <tr class="hover:bg-gray-50/80 transition-colors">
-                        <td class="px-6 py-4 font-semibold text-gray-900">${colab.nome}</td>
-                        <td class="px-6 py-4 text-gray-600">${colab.cargo} <span class="text-xs text-gray-400">(${colab.setor})</span></td>
-                        <td class="px-6 py-4 text-gray-500">${colab.admissao}</td>
-                        <td class="px-6 py-4">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                <span class="w-1.5 h-1.5 rounded-full bg-green-600"></span> ${colab.esocial}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 text-right">
-                            <button onclick="removerColaborador(${colab.id})" class="text-red-600 hover:text-red-900 font-medium text-xs">Excluir</button>
-                        </td>
-                    </tr>
-                `;
-                // Dropdown de Rescisão
-                selectRescisao.innerHTML += `<option value="${colab.id}">${colab.nome}</option>`;
-            });
-
-            document.getElementById('dash-total-emp').innerText = colaboradores.length;
-        }
-
-        // Inclusão Simples de Fluxo Continuo (Admissão via ATS)
-        function promoverParaColaborador(nome, cargo, setor) {
-            const hoje = new Date().toLocaleDateString('pt-BR');
-            const novoId = colaboradores.length + 1;
-            colaboradores.push({ id: novoId, nome, cargo, setor, admissao: hoje, esocial: "Sincronizado" });
-            
-            renderizarColaboradores();
-            alert(`${nome} foi integrado com sucesso! Evento de admissão S-2200 validado.`);
-            switchTab('colaboradores');
-        }
-
-        // Exclusão / Remoção Manual
-        function removerColaborador(id) {
-            colaboradores = colaboradores.filter(c => c.id !== id);
-            renderizarColaboradores();
-        }
-
-        // Mecanismo do Chat Interno
-        function enviarMensagem(e) {
+        // Ações de Escrita e Mutação
+        function salvarNovaVaga(e) {
             e.preventDefault();
-            const input = document.getElementById('chat-input');
-            if(!input.value.trim()) return;
-
-            const box = document.getElementById('chat-messages');
-            box.innerHTML += `
-                <div class="flex flex-col items-end max-w-lg ml-auto">
-                    <div class="flex items-baseline gap-2 mb-1">
-                        <span class="font-bold text-xs text-blue-900">Você</span>
-                        <span class="text-[10px] text-gray-400">Agora</span>
-                    </div>
-                    <div class="bg-blue-600 p-3 rounded-xl rounded-tr-none text-sm text-white shadow-sm">
-                        ${input.value}
-                    </div>
-                </div>
-            `;
-            input.value = '';
-            box.scrollTop = box.scrollHeight;
+            const nova = {
+                id: vagas.length + 1,
+                titulo: document.getElementById('mv-titulo').value,
+                departamento: document.getElementById('mv-dep').value,
+                modelo: document.getElementById('mv-modelo').value,
+                local: document.getElementById('mv-local').value
+            };
+            vagas.push(nova);
+            fecharModalVaga();
+            atualizarDisplays();
+            e.target.reset();
         }
 
-        // Motor de Cálculo de Rescisão (Simulado)
-        function calcularRescisao() {
-            const select = document.getElementById('rescisao-select-colaborador');
-            const idSelected = select.value;
-            
-            if(!idSelected) {
-                alert('Por favor, selecione um funcionário ativo.');
+        function salvarCurriculo(e) {
+            e.preventDefault();
+            const cpfInput = document.getElementById('form-cpf').value;
+
+            // Validação Básica de Integridade Cadastral (Imprescindível para Futura Admissão)
+            if (cpfInput.length !== 11 || isNaN(cpfInput)) {
+                alert("Erro estrutural: O CPF precisa conter exatamente 11 algarismos numéricos.");
                 return;
             }
 
-            const func = colaboradores.find(c => c.id == idSelected);
-            const container = document.getElementById('resultado-rescisao');
+            const novoCandidato = {
+                nome: document.getElementById('form-nome').value,
+                cpf: cpfInput.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"), // Máscara visual
+                vagaId: document.getElementById('form-vaga-select').value,
+                fase: "Triagem Curricular"
+            };
 
-            container.className = "bg-white p-6 rounded-xl border-2 border-red-100 shadow-sm space-y-4 text-left text-gray-800";
-            container.innerHTML = `
-                <div class="flex justify-between items-start border-b border-gray-100 pb-3">
-                    <div>
-                        <h4 class="font-bold text-gray-900">Demonstrativo Rescisório</h4>
-                        <p class="text-xs text-gray-500">Ref: ${func.nome}</p>
-                    </div>
-                    <span class="px-2 py-1 bg-red-100 text-red-700 text-[10px] font-bold rounded uppercase">Prévia S-2299</span>
-                </div>
-                <div class="space-y-2 text-sm">
-                    <div class="flex justify-between"><span>Saldo de Salário (15 dias):</span><span class="font-medium">R$ 1.250,00</span></div>
-                    <div class="flex justify-between"><span>Aviso Prévio Indenizado:</span><span class="font-medium">R$ 2.500,00</span></div>
-                    <div class="flex justify-between"><span>13º Salário Proporcional:</span><span class="font-medium">R$ 1.041,66</span></div>
-                    <div class="flex justify-between"><span>Férias Proporcionais + 1/3:</span><span class="font-medium">R$ 1.388,88</span></div>
-                    <div class="flex justify-between text-red-600"><span>Desconto DSR/Faltas:</span><span class="font-medium">-R$ 120,00</span></div>
-                    <div class="border-t border-dashed border-gray-200 my-2"></div>
-                    <div class="flex justify-between text-lg font-bold text-gray-900">
-                        <span>Líquido a Receber:</span>
-                        <span>R$ 6.060,54</span>
-                    </div>
-                </div>
-                <button onclick="efetivarDesligamento(${func.id}, '${func.nome}')" class="w-full mt-2 bg-gray-900 text-white font-semibold py-2 rounded-lg text-xs text-center hover:bg-gray-800">
-                    Efetivar Desligamento no eSocial
-                </button>
-            `;
+            candidatos.push(novoCandidato);
+            alert("Currículo registrado com sucesso na base integrada! O RH já consegue visualizar sua inscrição.");
+            atualizarDisplays();
+            e.target.reset();
+            alternarVisao('rh'); // Retorna ao painel operativo para ver o fluxo cair
         }
 
-        function efetivarDesligamento(id, nome) {
-            alert(`Sucesso! Evento S-2299 processado e enviado. ${nome} foi removido da base ativa.`);
-            removerColaborador(id);
-            document.getElementById('resultado-rescisao').className = "bg-gray-50 p-6 rounded-xl border border-gray-200 flex flex-col justify-center items-center text-center text-gray-400";
-            document.getElementById('resultado-rescisao').innerHTML = `
-                <i data-lucide="calculator" class="w-12 h-12 mb-2 text-gray-300"></i>
-                <p class="text-sm">Selecione um funcionário e clique em calcular para processar a rescisão e gerar o arquivo de compliance.</p>
-            `;
+        // Renderizadores de Atualização de Estado
+        function atualizarDisplays() {
+            // 1. Renderiza Visão RH - Lista de Vagas
+            const containerVagasRH = document.getElementById('lista-vagas-rh');
+            containerVagasRH.innerHTML = '';
+            vagas.forEach(v => {
+                containerVagasRH.innerHTML += `
+                    <div class="p-3 bg-gray-50 border border-gray-200 rounded-lg hover:border-blue-400 transition-all">
+                        <p class="font-semibold text-xs text-blue-900">${v.departamento}</p>
+                        <h4 class="font-bold text-sm text-gray-900 mt-0.5">${v.titulo}</h4>
+                        <p class="text-xs text-gray-500 mt-1 flex items-center gap-1"><i data-lucide='map-pin' class='w-3 h-3'></i> ${v.local} (${v.modelo})</p>
+                    </div>
+                `;
+            });
+
+            // 2. Renderiza Dropdown e Grid no Portal do Candidato
+            const selectVagasForm = document.getElementById('form-vaga-select');
+            const portalLista = document.getElementById('portal-vagas-lista');
+            
+            selectVagasForm.innerHTML = '<option value="">-- Selecione --</option>';
+            portalLista.innerHTML = '';
+
+            vagas.forEach(v => {
+                selectVagasForm.innerHTML += `<option value="${v.titulo}">${v.titulo}</option>`;
+                portalLista.innerHTML += `
+                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm space-y-3">
+                        <div>
+                            <span class="bg-blue-50 text-blue-700 font-bold text-[10px] uppercase px-2 py-0.5 rounded">${v.departamento}</span>
+                            <h4 class="font-bold text-base text-gray-900 mt-2">${v.titulo}</h4>
+                            <p class="text-xs text-gray-500 mt-1 flex items-center gap-1"><i data-lucide='map-pin' class='w-3 h-3'></i> ${v.local} — ${v.modelo}</p>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // 3. Renderiza Tabela de Candidatos no RH
+            const tabelaCand = document.getElementById('tabela-cand-rh');
+            const avisoSemCand = document.getElementById('sem-cand-aviso');
+            tabelaCand.innerHTML = '';
+
+            if (candidatos.length > 0) {
+                avisoSemCand.classList.add('hidden');
+                candidatos.forEach(c => {
+                    tabelaCand.innerHTML += `
+                        <tr class="hover:bg-gray-50/50 transition-colors">
+                            <td class="p-3 font-medium text-gray-900">${c.nome}</td>
+                            <td class="p-3 text-gray-600 font-mono text-xs">${c.cpf}</td>
+                            <td class="p-3 text-gray-600 font-semibold">${c.vagaId}</td>
+                            <td class="p-3">
+                                <span class="bg-amber-100 text-amber-800 text-[11px] font-medium px-2.5 py-0.5 rounded-full">${c.fase}</span>
+                            </td>
+                        </tr>
+                    `;
+                });
+            } else {
+                avisoSemCand.classList.remove('hidden');
+            }
+
+            // Atualiza Contadores
+            document.getElementById('qtd-vagas').innerText = vagas.length;
+            document.getElementById('qtd-cand').innerText = candidatos.length;
+            
             lucide.createIcons();
-            switchTab('colaboradores');
         }
     </script>
 </body>
