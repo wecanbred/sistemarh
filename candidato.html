@@ -15,21 +15,20 @@
 
     <!-- BARRA SUPERIOR -->
     <header class="bg-white border-b border-gray-200 px-8 py-4 flex justify-between items-center shadow-sm">
-        <!-- Logo agora é um link clicável que aponta para o index.html -->
         <a href="index.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer">
             <i data-lucide="rocket" class="text-blue-600 w-6 h-6"></i>
             <span class="text-xl font-bold text-gray-900 tracking-tight">CoreHR <span class="text-blue-600 font-medium text-sm">Carreiras</span></span>
         </a>
         <div id="header-user-actions"></div>
     </header>
-    
+
     <main class="flex-1 p-6 max-w-6xl w-full mx-auto my-4">
         
         <!-- SEÇÃO DE AUTENTICAÇÃO (LOGIN / CADASTRO) -->
-        <div id="area-autenticacao" class="max-w-2xl w-full mx-auto bg-white p-8 rounded-xl border border-gray-200 shadow-md space-y-6 my-6">
+        <div id="area-autenticacao" class="max-w-3xl w-full mx-auto bg-white p-8 rounded-xl border border-gray-200 shadow-md space-y-6 my-6">
             <div class="flex border-b border-gray-200 pb-3">
                 <button onclick="alternarAbasAuth('login')" id="tab-login" class="flex-1 text-center font-bold text-sm text-blue-600 border-b-2 border-blue-600 pb-2">Já tenho cadastro</button>
-                <button onclick="alternarAbasAuth('cadastro')" id="tab-cadastro" class="flex-1 text-center font-bold text-sm text-gray-400 pb-2 hover:text-gray-600">Criar Nova Conta (Completa)</button>
+                <button onclick="alternarAbasAuth('cadastro')" id="tab-cadastro" class="flex-1 text-center font-bold text-sm text-gray-400 pb-2 hover:text-gray-600">Criar Currículo Profissional</button>
             </div>
 
             <!-- FORMULÁRIO DE LOGIN -->
@@ -42,113 +41,198 @@
                     <label class="block text-xs font-semibold text-gray-600 mb-1">Senha</label>
                     <input type="password" id="login-senha" required class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                 </div>
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-lg text-sm transition-colors">Entrar</button>
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-lg text-sm transition-colors">Entrar e Ver Vagas</button>
             </form>
 
-            <!-- FORMULÁRIO DE CADASTRO EXPANDIDO (TRIAGEM COMPLETA + eSOCIAL) -->
-            <form id="form-cadastro" onsubmit="registrarCandidato(event)" class="hidden space-y-6">
+            <!-- FORMULÁRIO DE CADASTRO EM CONFORMIDADE COM A LGPD -->
+            <form id="form-cadastro" onsubmit="registrarCandidato(event)" class="hidden space-y-8">
                 
-                <!-- Dados de Acesso -->
-                <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100 space-y-3">
-                    <h4 class="font-bold text-xs text-blue-900 uppercase tracking-wider">Dados de Acesso</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">E-mail Comercial</label>
-                            <input type="email" id="cad-email" required class="w-full text-sm px-3 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Defina uma Senha</label>
-                            <input type="password" id="cad-senha" required class="w-full text-sm px-3 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                        </div>
+                <!-- Credenciais de Acesso -->
+                <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">E-mail (Principal canal de comunicação)</label>
+                        <input type="email" id="cad-email" required class="w-full text-sm px-3 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 mb-1">Crie uma Senha para Acesso</label>
+                        <input type="password" id="cad-senha" required class="w-full text-sm px-3 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                 </div>
 
-                <!-- Dados Pessoais Estruturados -->
-                <div class="space-y-3">
-                    <h4 class="font-bold text-xs text-gray-400 uppercase tracking-wider border-b pb-1">Identificação Pessoal</h4>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Nome Completo</label>
-                        <input type="text" id="cad-nome" required class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <!-- 1. Dados Pessoais e de Contato -->
+                <div class="space-y-4">
+                    <h3 class="text-sm font-bold text-blue-700 uppercase tracking-wider flex items-center gap-2">
+                        <i data-lucide="user" class="w-4 h-4"></i> 1. Dados Pessoais e de Contato
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">CPF (Apenas números)</label>
-                            <input type="text" id="cad-cpf" maxlength="11" required placeholder="00000000000" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Nome Completo</label>
+                            <input type="text" id="cad-nome" required class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">RG</label>
-                            <input type="text" id="cad-rg" required class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">PIS / NIS</label>
-                            <input type="text" id="cad-pis" placeholder="Opcional na triagem" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Telefone Celular</label>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Telefone (Celular / WhatsApp)</label>
                             <input type="text" id="cad-tel" required placeholder="(11) 99999-9999" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                         </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="col-span-2">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Cidade e Estado de Residência</label>
+                            <input type="text" id="cad-localizacao" required placeholder="Ex: São Paulo - SP" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
                         <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Gênero</label>
-                            <select id="cad-genero" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg bg-white outline-none">
-                                <option>Masculino</option>
-                                <option>Feminino</option>
-                                <option>Não Informar</option>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Link do LinkedIn (Opcional)</label>
+                            <input type="url" id="cad-linkedin" placeholder="https://linkedin.com/in/..." class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                    </div>
+                    <p class="text-[11px] text-emerald-600 bg-emerald-50 px-3 py-2 rounded-lg flex items-center gap-1.5 font-medium border border-emerald-100">
+                        <i data-lucide="shield-check" class="w-4 h-4"></i> Proteção LGPD: Não coletamos RG, CPF ou endereço residencial nesta fase.
+                    </p>
+                </div>
+
+                <!-- 2. Objetivo Profissional e Preferências -->
+                <div class="space-y-4 border-t border-gray-100 pt-6">
+                    <h3 class="text-sm font-bold text-blue-700 uppercase tracking-wider flex items-center gap-2">
+                        <i data-lucide="target" class="w-4 h-4"></i> 2. Objetivo Profissional e Preferências
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Área de Interesse / Cargo</label>
+                            <select id="cad-cargo" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg bg-white outline-none">
+                                <option>Operações e Logística</option>
+                                <option>Supervisão e Liderança Onsite</option>
+                                <option>Administrativo / RH</option>
+                                <option>Transportes e Frota</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Raça / Etnia (eSocial)</label>
-                            <select id="cad-raca" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg bg-white outline-none">
-                                <option>Branca</option>
-                                <option>Preta</option>
-                                <option>Parda</option>
-                                <option>Amarela</option>
-                                <option>Indígena</option>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Modalidade de Trabalho Preferida</label>
+                            <select id="cad-modalidade" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg bg-white outline-none">
+                                <option>Presencial</option>
+                                <option>Híbrido</option>
+                                <option>Home Office</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Tipo de Contrato Pretendido</label>
+                            <select id="cad-contrato" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg bg-white outline-none">
+                                <option>CLT</option>
+                                <option>PJ</option>
+                                <option>Estágio</option>
+                                <option>Trainee</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Pretensão Salarial (R$ Mensal)</label>
+                            <input type="number" id="cad-pretensao" required placeholder="Ex: 3500" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                         </div>
                     </div>
                 </div>
 
-                <!-- Endereço Residencial -->
-                <div class="space-y-3">
-                    <h4 class="font-bold text-xs text-gray-400 uppercase tracking-wider border-b pb-1">Endereço Residencial</h4>
-                    <div class="grid grid-cols-4 gap-3">
-                        <div class="col-span-3">
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Logradouro (Rua/Avenida)</label>
-                            <input type="text" id="cad-rua" required class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                        </div>
-                        <div class="col-span-1">
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Nº</label>
-                            <input type="text" id="cad-num" required class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                        </div>
+                <!-- 3. Histórico Profissional (Experiências) -->
+                <div class="space-y-4 border-t border-gray-100 pt-6">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-sm font-bold text-blue-700 uppercase tracking-wider flex items-center gap-2">
+                            <i data-lucide="briefcase" class="w-4 h-4"></i> 3. Histórico Profissional (Última Experiência)
+                        </h3>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Bairro</label>
-                            <input type="text" id="cad-bairro" required class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    <div class="bg-gray-50/50 p-4 rounded-xl border border-gray-200 space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Nome da Empresa</label>
+                                <input type="text" id="cad-exp-empresa" required class="w-full text-sm px-3 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Cargo Ocupado</label>
+                                <input type="text" id="cad-exp-cargo" required class="w-full text-sm px-3 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1">Período de Atuação (Início - Término)</label>
+                                <input type="text" id="cad-exp-periodo" required placeholder="Ex: Mar/2024 - Atual ou Jan/2022 - Fev/2024" class="w-full text-sm px-3 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                            </div>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">Cidade</label>
-                            <input type="text" id="cad-cidade" required class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-600 mb-1">CEP</label>
-                            <input type="text" id="cad-cep" required placeholder="00000-000" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Principais atividades e conquistas</label>
+                            <textarea id="cad-exp-atividades" rows="3" required placeholder="Resuma suas responsabilidades e resultados alcançados..." class="w-full text-sm px-3 py-2 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
                         </div>
                     </div>
                 </div>
 
-                <!-- Experiências -->
-                <div class="space-y-3">
-                    <h4 class="font-bold text-xs text-gray-400 uppercase tracking-wider border-b pb-1">Histórico e Perfil</h4>
+                <!-- 4. Formação Acadêmica -->
+                <div class="space-y-4 border-t border-gray-100 pt-6">
+                    <h3 class="text-sm font-bold text-blue-700 uppercase tracking-wider flex items-center gap-2">
+                        <i data-lucide="graduation-cap" class="w-4 h-4"></i> 4. Formação Acadêmica
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Nível de Escolaridade</label>
+                            <select id="cad-acad-nivel" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg bg-white outline-none">
+                                <option>Ensino Médio</option>
+                                <option>Técnico</option>
+                                <option>Graduação</option>
+                                <option>Pós-graduação / Especialização</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Nome do Curso</label>
+                            <input type="text" id="cad-acad-curso" required placeholder="Ex: Administração, Logística" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="col-span-2">
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Instituição de Ensino</label>
+                            <input type="text" id="cad-acad-instituicao" required class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Status / Ano de Conclusão</label>
+                            <input type="text" id="cad-acad-status" required placeholder="Ex: Concluído em 2023 ou Cursando (Previsão 2027)" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. Competências e Conhecimentos Técnicos -->
+                <div class="space-y-4 border-t border-gray-100 pt-6">
+                    <h3 class="text-sm font-bold text-blue-700 uppercase tracking-wider flex items-center gap-2">
+                        <i data-lucide="wrench" class="w-4 h-4"></i> 5. Competências e Conhecimentos Técnicos
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Idiomas e Fluência</label>
+                            <input type="text" id="cad-comp-idioma" placeholder="Ex: Inglês (Intermediário), Espanhol (Básico)" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1">Ferramentas, Softwares e Sistemas</label>
+                            <input type="text" id="cad-comp-ferramentas" placeholder="Ex: Excel Avançado, Google Sheets, ERP SAP" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        </div>
+                    </div>
                     <div>
-                        <label class="block text-xs font-semibold text-gray-600 mb-1">Resumo das Últimas Experiências Profissionais</label>
-                        <textarea id="cad-resumo" rows="4" required placeholder="Descreva os cargos anteriores, empresas e tempo de permanência..." class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Cursos Complementares ou Certificações</label>
+                        <input type="text" id="cad-comp-certificados" placeholder="Ex: Green Belt Lean Six Sigma, Curso Vendas Consultivas" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                     </div>
                 </div>
 
-                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-lg text-sm transition-colors shadow">Finalizar Cadastro Completo</button>
+                <!-- 6. Anexos e Consentimento -->
+                <div class="space-y-4 border-t border-gray-100 pt-6">
+                    <h3 class="text-sm font-bold text-blue-700 uppercase tracking-wider flex items-center gap-2">
+                        <i data-lucide="file-check" class="w-4 h-4"></i> 6. Anexos e Consentimento (LGPD)
+                    </h3>
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-600 mb-1">Anexe seu Currículo Diagramado (Apenas simulação de arquivo texto)</label>
+                        <input type="text" id="cad-anexo-nome" placeholder="Ex: curriculo_atualizado.pdf" class="w-full text-sm px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    
+                    <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-200 flex items-start gap-3">
+                        <input type="checkbox" id="cad-lgpd-consentimento" required class="mt-1 w-4 h-4 rounded text-blue-600 focus:ring-blue-500 border-gray-300">
+                        <label for="cad-lgpd-consentimento" class="text-xs text-gray-600 leading-relaxed">
+                            <strong class="text-blue-900">Termo de Consentimento para Tratamento de Dados (LGPD):</strong> Autorizo a empresa a armazenar e processar os dados do meu currículo e perfil profissional contidos neste formulário exclusivamente para finalidades de recrutamento, seleção e triagem de vagas internas, pelo período determinado na Política de Privacidade.
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-lg text-sm transition-colors shadow-md">Finalizar e Gravar Currículo</button>
             </form>
         </div>
 
@@ -175,7 +259,6 @@
 
         let candidatoLogado = null;
 
-        // Inicializador do banco unificado no localStorage
         if(!localStorage.getItem('corehr_candidatos')) {
             localStorage.setItem('corehr_candidatos', JSON.stringify([]));
         }
@@ -206,23 +289,42 @@
 
         function registrarCandidato(e) {
             e.preventDefault();
-            const cpf = document.getElementById('cad-cpf').value;
-            if(cpf.length !== 11 || isNaN(cpf)) { return alert("O CPF deve conter exatamente 11 números."); }
-
             const lista = JSON.parse(localStorage.getItem('corehr_candidatos'));
             
             const novo = {
                 email: document.getElementById('cad-email').value,
                 senha: document.getElementById('cad-senha').value,
                 nome: document.getElementById('cad-nome').value,
-                cpf: cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"),
-                rg: document.getElementById('cad-rg').value,
-                pis: document.getElementById('cad-pis').value || 'Não informado',
                 tel: document.getElementById('cad-tel').value,
-                genero: document.getElementById('cad-genero').value,
-                raca: document.getElementById('cad-raca').value,
-                endereco: `${document.getElementById('cad-rua').value}, Nº ${document.getElementById('cad-num').value} - ${document.getElementById('cad-bairro').value}, ${document.getElementById('cad-cidade').value} (CEP: ${document.getElementById('cad-cep').value})`,
-                resumo: document.getElementById('cad-resumo').value,
+                localizacao: document.getElementById('cad-localizacao').value,
+                linkedin: document.getElementById('cad-linkedin').value || 'Não informado',
+                
+                cargoPretendido: document.getElementById('cad-cargo').value,
+                modalidadePref: document.getElementById('cad-modalidade').value,
+                contratoPref: document.getElementById('cad-contrato').value,
+                pretensaoSalarial: document.getElementById('cad-pretensao').value,
+                
+                experienca: {
+                    empresa: document.getElementById('cad-exp-empresa').value,
+                    cargo: document.getElementById('cad-exp-cargo').value,
+                    periodo: document.getElementById('cad-exp-periodo').value,
+                    atividades: document.getElementById('cad-exp-atividades').value
+                },
+                
+                academico: {
+                    nivel: document.getElementById('cad-acad-nivel').value,
+                    curso: document.getElementById('cad-acad-curso').value,
+                    instituicao: document.getElementById('cad-acad-instituicao').value,
+                    status: document.getElementById('cad-acad-status').value
+                },
+                
+                competencias: {
+                    idiomas: document.getElementById('cad-comp-idioma').value || 'Não informado',
+                    ferramentas: document.getElementById('cad-comp-ferramentas').value || 'Não informado',
+                    certificacoes: document.getElementById('cad-comp-certificados').value || 'Não informado'
+                },
+                
+                anexoNome: document.getElementById('cad-anexo-nome').value || 'Nenhum arquivo anexado',
                 vagasInscritas: []
             };
 
@@ -230,7 +332,7 @@
 
             lista.push(novo);
             localStorage.setItem('corehr_candidatos', JSON.stringify(lista));
-            alert("Cadastro mestre realizado com sucesso!");
+            alert("Currículo gravado com sucesso no Banco de Talentos!");
             alternarAbasAuth('login');
             document.getElementById('login-email').value = novo.email;
         }
@@ -258,7 +360,7 @@
             if(candidatoLogado) {
                 h.innerHTML = `<div class="flex items-center gap-3 text-sm"><span>Olá, <strong>${candidatoLogado.nome}</strong></span><button onclick="logout()" class="text-xs bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg">Sair</button></div>`;
             } else {
-                h.innerHTML = `<span class="text-xs text-amber-600 bg-amber-50 px-3 py-1.5 border border-amber-200 rounded-full font-medium">Fase de Captação Externa</span>`;
+                h.innerHTML = `<span class="text-xs text-blue-600 bg-blue-50 px-3 py-1.5 border border-blue-200 rounded-full font-medium">Captação Externa LGPD Ativa</span>`;
             }
         }
 
@@ -274,7 +376,7 @@
                             <h3 class="font-bold text-gray-900 text-base mt-1.5">${v.titulo}</h3>
                             <p class="text-xs text-gray-500 mt-1">${v.local} • ${v.modelo}</p>
                         </div>
-                        <div>${inscrito ? `<span class="text-xs bg-green-100 text-green-700 font-semibold px-3 py-1 rounded-full">Candidatado</span>` : `<i data-lucide="chevron-right" class="text-gray-400"></i>`}</div>
+                        <div>${inscrito ? `<span class="text-xs bg-green-100 text-green-700 font-semibold px-3 py-1 rounded-full">Inscrito</span>` : `<i data-lucide="chevron-right" class="text-gray-400"></i>`}</div>
                     </div>
                 `;
             });
@@ -282,7 +384,7 @@
         }
 
         function exibirInstrucaoSelecao() {
-            document.getElementById('detalhe-conteudo').innerHTML = `<div class="text-center py-12 text-gray-400"><p class="text-sm">Selecione uma oportunidade ao lado para ver os detalhes e se candidatar.</p></div>`;
+            document.getElementById('detalhe-conteudo').innerHTML = `<div class="text-center py-12 text-gray-400"><p class="text-sm">Selecione uma vaga ao lado para ler a descrição e se candidatar.</p></div>`;
         }
 
         function verDetalheVaga(idVaga) {
@@ -295,21 +397,23 @@
                     <p class="text-sm text-gray-600 leading-relaxed"><strong>Descrição:</strong> ${v.desc}</p>
                     <p class="text-sm text-gray-600 leading-relaxed"><strong>Requisitos:</strong> ${v.req}</p>
                     <div class="pt-2">
-                        ${inscrito ? `<button disabled class="w-full bg-gray-100 text-gray-400 py-2.5 rounded-lg text-sm cursor-not-allowed">Inscrição Concluída</button>` : `<button onclick="inscreverNaVaga(${v.id})" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-lg text-sm transition-colors shadow">Confirmar Candidatura</button>`}
+                        ${inscrito ? `<button disabled class="w-full bg-gray-100 text-gray-400 py-2.5 rounded-lg text-sm cursor-not-allowed">Candidatura Enviada</button>` : `<button onclick="inscreverNaVaga(${v.id})" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-lg text-sm transition-colors shadow">Quero me candidatar</button>`}
                     </div>
                 </div>
             `;
         }
 
-        function inscreverNaVaga(idVaga) {
+        function BlackboxAtualizarMestre(novoCandidato) {
             const lista = JSON.parse(localStorage.getItem('corehr_candidatos'));
-            const idx = lista.findIndex(c => c.email === candidatoLogado.email);
-            
-            lista[idx].vagasInscritas.push(idVaga);
+            const idx = lista.findIndex(c => c.email === novoCandidato.email);
+            lista[idx] = novoCandidato;
             localStorage.setItem('corehr_candidatos', JSON.stringify(lista));
-            candidatoLogado = lista[idx];
-            
-            alert("Inscrição efetuada com sucesso!");
+        }
+
+        function inscreverNaVaga(idVaga) {
+            candidatoLogado.vagasInscritas.push(idVaga);
+            BlackboxAtualizarMestre(candidatoLogado);
+            alert("Candidatura confirmada!");
             renderizarVagas();
             verDetalheVaga(idVaga);
         }
